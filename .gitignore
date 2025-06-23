@@ -1,0 +1,38 @@
+# Node dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Optional runtime data
+.pnpm-debug.log
+*.log
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Local environment variables
+.env
+.env.*  # if you use multiple env files like .env.development
+
+# IDE / Editor folders
+.vscode/
+.idea/
+
+# Mac files
+*.DS_Store
+
+# Optional: lock files for other package managers you aren't using
+package-lock.json
+yarn.lock

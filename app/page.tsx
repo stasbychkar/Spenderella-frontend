@@ -1,3 +1,5 @@
+"use client"
+
 import { CreditCard, Eye, ArrowRight, Building2, Wallet, Plus, User } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -5,24 +7,26 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { SpendingChart } from "@/components/spending-chart"
 import { GlassCard } from "@/components/glass-card"
 import Image from "next/image"
+import { useEffect } from "react"
+import { createLinkToken, exchangePublicToken } from '@/lib/api/plaid';
 
 // Sample data
 
 const linkedBanks = [
-  {
-    id: 1,
-    name: "Chase Bank",
-    lastFour: "1234",
-    accountType: "Checking",
-    logo: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: 2,
-    name: "Bank of America",
-    lastFour: "5678",
-    accountType: "Savings",
-    logo: "/placeholder.svg?height=40&width=40",
-  },
+  // {
+  //   id: 1,
+  //   name: "Chase Bank",
+  //   lastFour: "1234",
+  //   accountType: "Checking",
+  //   logo: "/placeholder.svg?height=40&width=40",
+  // },
+  // {
+  //   id: 2,
+  //   name: "Bank of America",
+  //   lastFour: "5678",
+  //   accountType: "Savings",
+  //   logo: "/placeholder.svg?height=40&width=40",
+  // },
 ]
 
 const recentTransactions = [
@@ -96,6 +100,41 @@ const spendingData = [
 const totalSpent = spendingData.reduce((sum, item) => sum + item.value, 0)
 
 export default function Dashboard() {
+  // Connect new bank item
+  useEffect(() => {
+    async function initPlaid() {
+      try {
+        const { link_token } = await createLinkToken();
+
+        const handler = (window as any).Plaid.create({
+          token: link_token,
+          onSuccess: async (public_token: string, metadata: any) => {
+            console.log("Public token received:", public_token);
+
+            try {
+              const result = await exchangePublicToken(
+                public_token,
+                metadata.institution?.name
+              );
+              console.log("Exchange token result:", result);
+            } catch (err) {
+              console.error("Error exchanging token:", err);
+            }
+          },
+        });
+
+        const btn = document.getElementById("link-button");
+        if (btn) {
+          btn.onclick = () => handler.open();
+        }
+      } catch (err) {
+        console.error("Error creating Plaid link token:", err);
+      }
+    }
+
+    initPlaid();
+  }, []);
+
   // Show no accounts page if no banks are linked
   if (linkedBanks.length === 0) {
     return (
@@ -157,6 +196,7 @@ export default function Dashboard() {
                     <Button
                       size="lg"
                       className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-0 shadow-xl hover:shadow-2xl transition-all duration-300 text-lg px-8 py-6 h-auto"
+                      id="link-button"
                     >
                       <Plus className="mr-3 h-6 w-6" />
                       Link Your First Account

@@ -7,6 +7,7 @@ import { GlassCard } from "@/components/glass-card"
 import Image from "next/image"
 
 // Sample data
+
 const linkedBanks = [
   {
     id: 1,
@@ -22,24 +23,7 @@ const linkedBanks = [
     accountType: "Savings",
     logo: "/placeholder.svg?height=40&width=40",
   },
-  {
-    id: 3,
-    name: "Wells Fargo",
-    lastFour: "9012",
-    accountType: "Checking",
-    logo: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: 4,
-    name: "Citi Bank",
-    lastFour: "3456",
-    accountType: "Credit Card",
-    logo: "/placeholder.svg?height=40&width=40",
-  },
 ]
-
-// To test empty state, uncomment the line below and comment the one above
-// const linkedBanks = []
 
 const recentTransactions = [
   {
@@ -112,6 +96,83 @@ const spendingData = [
 const totalSpent = spendingData.reduce((sum, item) => sum + item.value, 0)
 
 export default function Dashboard() {
+  // Show no accounts page if no banks are linked
+  if (linkedBanks.length === 0) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+        {/* Background Pattern */}
+        <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-indigo-500/5" />
+        <div
+          className="fixed inset-0 opacity-30"
+          style={{
+            backgroundImage: `radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%), 
+                             radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%)`,
+          }}
+        />
+
+        <div className="relative z-10">
+          {/* Top Navigation */}
+          <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/20 bg-white/10 backdrop-blur-xl">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="flex h-16 items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Image src="/logo.png" alt="Spenderella Logo" width={48} height={48} className="object-contain" />
+                  <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    Spenderella
+                  </h1>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all"
+                  >
+                    <User className="h-5 w-5 text-gray-700" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </nav>
+
+          {/* No Accounts Linked Page */}
+          <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8 pt-24">
+            <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center text-center mt-4">
+
+                {/* Main Content */}
+                <div className="space-y-6">
+                  <div className="space-y-3 pb-4  ">
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      Welcome to Spenderella!
+                    </h1>
+                    <h2 className="text-2xl font-semibold text-gray-800">No Accounts Linked Yet</h2>
+                  </div>
+
+                  {/* <p className="text-lg text-gray-600 leading-relaxed max-w-lg mx-auto">
+                    Connect your bank accounts and manage your finances like magic! ✨
+                  </p> */}
+
+                  {/* Call to Action */}
+                  <div className="space-y-3">
+                    <Button
+                      size="lg"
+                      className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-0 shadow-xl hover:shadow-2xl transition-all duration-300 text-lg px-8 py-6 h-auto"
+                    >
+                      <Plus className="mr-3 h-6 w-6" />
+                      Link Your First Account
+                      <ArrowRight className="ml-3 h-6 w-6" />
+                    </Button>
+
+                    <p className="text-sm text-gray-500">We support 10,000+ banks and credit unions</p>
+                  </div>
+                </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Modern Background Pattern */}
@@ -206,45 +267,29 @@ export default function Dashboard() {
                     )}
                   </div>
 
-                  {linkedBanks.length === 0 ? (
-                    <div className="flex-1 flex flex-col items-center justify-center text-center">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/40 border border-white/50 mb-4">
-                        <CreditCard className="h-8 w-8 text-gray-500" />
-                      </div>
-                      <h4 className="text-lg font-semibold text-gray-700 mb-2">No Accounts Linked</h4>
-                      <p className="text-sm text-gray-500 mb-6 max-w-xs">
-                        Connect your bank accounts to start tracking your expenses automatically.
-                      </p>
-                      <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-0 shadow-lg">
-                        <Plus className="mr-2 h-4 w-4" />
-                        Link Account
-                      </Button>
-                    </div>
-                  ) : (
-                    <ScrollArea className="flex-1">
-                      <div className="space-y-4">
-                        {linkedBanks.map((bank) => (
-                          <div
-                            key={bank.id}
-                            className="flex items-center gap-4 p-4 rounded-xl bg-white/40 border border-white/50 hover:bg-white/60 transition-all"
-                          >
-                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/70 border border-white/50 shadow-sm">
-                              <Building2 className="h-6 w-6 text-gray-600" />
-                            </div>
-                            <div className="flex-1">
-                              <h4 className="font-semibold text-gray-800">{bank.name}</h4>
-                              <div className="flex items-center gap-4 text-sm text-gray-500">
-                                <span>••••{bank.lastFour}</span>
-                                <Badge variant="outline" className="bg-white/50 border-white/60 text-gray-700 text-xs">
-                                  {bank.accountType}
-                                </Badge>
-                              </div>
+                  <ScrollArea className="flex-1">
+                    <div className="space-y-4">
+                      {linkedBanks.map((bank) => (
+                        <div
+                          key={bank.id}
+                          className="flex items-center gap-4 p-4 rounded-xl bg-white/40 border border-white/50 hover:bg-white/60 transition-all"
+                        >
+                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/70 border border-white/50 shadow-sm">
+                            <Building2 className="h-6 w-6 text-gray-600" />
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-gray-800">{bank.name}</h4>
+                            <div className="flex items-center gap-4 text-sm text-gray-500">
+                              <span>••••{bank.lastFour}</span>
+                              <Badge variant="outline" className="bg-white/50 border-white/60 text-gray-700 text-xs">
+                                {bank.accountType}
+                              </Badge>
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    </ScrollArea>
-                  )}
+                        </div>
+                      ))}
+                    </div>
+                  </ScrollArea>
                 </GlassCard>
               </div>
 

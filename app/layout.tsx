@@ -10,14 +10,14 @@ export const metadata = {
   generator: 'v0.dev'
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+        {/* Plaid SDK script */}
+        <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js" async></script>
+      </head>
+      <body>{children}</body>
     </html>
   )
 }

@@ -23,6 +23,7 @@ yarn-error.log*
 *.tsbuildinfo
 
 # Local environment variables
+.env.local
 .env
 .env.*  # if you use multiple env files like .env.development
 

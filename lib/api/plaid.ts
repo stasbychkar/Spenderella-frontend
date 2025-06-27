@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = process.env.NEXT_PUBLIC_MY_API_BASE_URL;
+console.log("BASE_URL from env:", BASE_URL);
 
 export async function createLinkToken(): Promise<{ link_token: string }> {
     const res = await fetch(`${BASE_URL}/link-token`);

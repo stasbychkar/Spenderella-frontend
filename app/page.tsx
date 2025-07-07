@@ -118,6 +118,7 @@ export default function Dashboard() {
                 metadata.institution?.name
               );
               console.log("Exchange token result:", result);
+              window.location.reload();
             } catch (err) {
               console.error("Error exchanging token:", err);
             }
@@ -224,7 +225,7 @@ export default function Dashboard() {
 
   
   // Show no accounts page if no banks are linked
-  if (!dashboardData) {
+  if (linkedBanks.length == 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
         {/* Background Pattern */}

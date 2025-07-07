@@ -7,97 +7,98 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { SpendingChart } from "@/components/spending-chart"
 import { GlassCard } from "@/components/glass-card"
 import Image from "next/image"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { createLinkToken, exchangePublicToken } from '@/lib/api/plaid';
+import { fetchDashboard, DashboardData } from "@/lib/api/database"
 
 // Sample data
 
-const linkedBanks = [
-  // {
-  //   id: 1,
-  //   name: "Chase Bank",
-  //   lastFour: "1234",
-  //   accountType: "Checking",
-  //   logo: "/placeholder.svg?height=40&width=40",
-  // },
-  // {
-  //   id: 2,
-  //   name: "Bank of America",
-  //   lastFour: "5678",
-  //   accountType: "Savings",
-  //   logo: "/placeholder.svg?height=40&width=40",
-  // },
-]
+// const linkedBanks = [
+//   {
+//     id: 1,
+//     name: "Chase Bank",
+//     lastFour: "1234",
+//     accountType: "Checking",
+//     logo: "/placeholder.svg?height=40&width=40",
+//   },
+//   {
+//     id: 2,
+//     name: "Bank of America",
+//     lastFour: "5678",
+//     accountType: "Savings",
+//     logo: "/placeholder.svg?height=40&width=40",
+//   },
+// ]
 
-const recentTransactions = [
-  {
-    id: 1,
-    date: "Dec 15, 2023",
-    merchant: "Starbucks Coffee",
-    category: "Food",
-    amount: -12.45,
-  },
-  {
-    id: 2,
-    date: "Dec 14, 2023",
-    merchant: "Amazon Purchase",
-    category: "Shopping",
-    amount: -89.99,
-  },
-  {
-    id: 3,
-    date: "Dec 14, 2023",
-    merchant: "Uber Ride",
-    category: "Transportation",
-    amount: -24.5,
-  },
-  {
-    id: 4,
-    date: "Dec 13, 2023",
-    merchant: "Netflix Subscription",
-    category: "Entertainment",
-    amount: -15.99,
-  },
-  {
-    id: 5,
-    date: "Dec 12, 2023",
-    merchant: "Grocery Store",
-    category: "Food",
-    amount: -156.78,
-  },
-  {
-    id: 6,
-    date: "Dec 11, 2023",
-    merchant: "Gas Station",
-    category: "Transportation",
-    amount: -45.2,
-  },
-  {
-    id: 7,
-    date: "Dec 10, 2023",
-    merchant: "Restaurant Dinner",
-    category: "Food",
-    amount: -78.5,
-  },
-  {
-    id: 8,
-    date: "Dec 9, 2023",
-    merchant: "Online Shopping",
-    category: "Shopping",
-    amount: -234.99,
-  },
-]
+// const recentTransactions = [
+//   {
+//     id: 1,
+//     date: "Dec 15, 2023",
+//     merchant: "Starbucks Coffee",
+//     category: "Food",
+//     amount: -12.45,
+//   },
+//   {
+//     id: 2,
+//     date: "Dec 14, 2023",
+//     merchant: "Amazon Purchase",
+//     category: "Shopping",
+//     amount: -89.99,
+//   },
+//   {
+//     id: 3,
+//     date: "Dec 14, 2023",
+//     merchant: "Uber Ride",
+//     category: "Transportation",
+//     amount: -24.5,
+//   },
+//   {
+//     id: 4,
+//     date: "Dec 13, 2023",
+//     merchant: "Netflix Subscription",
+//     category: "Entertainment",
+//     amount: -15.99,
+//   },
+//   {
+//     id: 5,
+//     date: "Dec 12, 2023",
+//     merchant: "Grocery Store",
+//     category: "Food",
+//     amount: -156.78,
+//   },
+//   {
+//     id: 6,
+//     date: "Dec 11, 2023",
+//     merchant: "Gas Station",
+//     category: "Transportation",
+//     amount: -45.2,
+//   },
+//   {
+//     id: 7,
+//     date: "Dec 10, 2023",
+//     merchant: "Restaurant Dinner",
+//     category: "Food",
+//     amount: -78.5,
+//   },
+//   {
+//     id: 8,
+//     date: "Dec 9, 2023",
+//     merchant: "Online Shopping",
+//     category: "Shopping",
+//     amount: -234.99,
+//   },
+// ]
 
-const spendingData = [
-  { name: "Food", value: 850, color: "#3b82f6" },
-  { name: "Shopping", value: 650, color: "#8b5cf6" },
-  { name: "Transportation", value: 320, color: "#06b6d4" },
-  { name: "Entertainment", value: 280, color: "#f59e0b" },
-  { name: "Utilities", value: 450, color: "#10b981" },
-  { name: "Other", value: 180, color: "#ef4444" },
-]
+// const spendingData = [
+//   { name: "Food", value: 850, color: "#3b82f6" },
+//   { name: "Shopping", value: 650, color: "#8b5cf6" },
+//   { name: "Transportation", value: 320, color: "#06b6d4" },
+//   { name: "Entertainment", value: 280, color: "#f59e0b" },
+//   { name: "Utilities", value: 450, color: "#10b981" },
+//   { name: "Other", value: 180, color: "#ef4444" },
+// ]
 
-const totalSpent = spendingData.reduce((sum, item) => sum + item.value, 0)
+// const totalSpent = spendingData.reduce((sum, item) => sum + item.value, 0)
 
 export default function Dashboard() {
   // Connect new bank item
@@ -135,8 +136,95 @@ export default function Dashboard() {
     initPlaid();
   }, []);
 
+  // Get dashboard data
+  const [dashboardData, setDashboardData] = useState<DashboardData>({
+    total_spent: 0,
+    linked_banks: [],
+    transactions: [],
+    spending_by_category: []
+  });  
+  const [error, setError ] = useState<string | null>(null);
+  const [loading, setLoading ] = useState<boolean>(true);
+
+  useEffect(() => {
+    async function loadDashboard() {
+      try {
+        setLoading(true);
+        const data = await fetchDashboard();
+        setDashboardData(data);
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadDashboard();
+  }, []);
+
+  console.log("Dashboard data fetched: ", dashboardData);
+
+  // To do ...
+  if (loading) return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      {/* Modern Background Pattern */}
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-indigo-500/5" />
+      <div
+        className="fixed inset-0 opacity-30"
+        style={{
+          backgroundImage: `radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%), 
+                           radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%)`,
+        }}
+      />
+
+      <div className="relative z-10">
+        {/* Top Navigation */}
+        <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/20 bg-white/10 backdrop-blur-xl">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex h-16 items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Image src="/logo.png" alt="Spenderella Logo" width={48} height={48} className="object-contain" />
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Spenderella
+                </h1>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all">
+                  <User className="h-5 w-5 text-gray-700" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </nav>      
+      </div>
+      <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8 pt-24">
+            <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center text-center">
+                <div className="space-y-6">
+                  <div className="space-y-3 pb-4  ">
+                    <h2 className="text-2xl font-semibold text-gray-800">Loading...</h2>
+                  </div>
+                </div>
+            </div>
+      </main>
+    </div>
+  )
+
+  if (error) return <div>Error loading dashboard: {error}</div>;
+  if (!dashboardData) return <div>No dashboard data available.</div>;
+
+  // Adjust data for frontend use
+  const linkedBanks = dashboardData.linked_banks;
+  const totalSpent = dashboardData.total_spent;
+  const spendingData = dashboardData.spending_by_category;
+  const recentTransactions = dashboardData.transactions;
+
+  
   // Show no accounts page if no banks are linked
-  if (linkedBanks.length === 0) {
+  if (!dashboardData) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
         {/* Background Pattern */}
@@ -176,7 +264,7 @@ export default function Dashboard() {
 
           {/* No Accounts Linked Page */}
           <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8 pt-24">
-            <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center text-center mt-4">
+            <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center text-center">
 
                 {/* Main Content */}
                 <div className="space-y-6">
@@ -260,7 +348,8 @@ export default function Dashboard() {
                 <GlassCard className="p-8 text-center h-full flex flex-col justify-center">
                   <h2 className="text-xl font-semibold text-gray-800 mb-6">Total Spent This Month</h2>
                   <div className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    ${totalSpent.toLocaleString()}
+                  {/* fix format! */}
+                    ${totalSpent.toLocaleString()} 
                   </div>
                 </GlassCard>
               </div>

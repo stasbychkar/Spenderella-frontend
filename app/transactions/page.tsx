@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { ArrowLeft, Search, Filter, Wallet, ChevronDown, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { GlassCard } from "@/components/glass-card"
@@ -19,7 +20,7 @@ const allTransactions = [
     category: "Food",
     amount: -12.45,
     description: "Coffee and pastry",
-    account: "Chase Checking",
+    account: "American Express",
   },
   {
     id: 2,
@@ -28,7 +29,7 @@ const allTransactions = [
     category: "Shopping",
     amount: -89.99,
     description: "Electronics accessories",
-    account: "Chase Checking",
+    account: "American Express",
   },
   {
     id: 3,
@@ -37,7 +38,7 @@ const allTransactions = [
     category: "Transportation",
     amount: -24.5,
     description: "Ride to downtown",
-    account: "Chase Checking",
+    account: "American Express",
   },
   {
     id: 4,
@@ -46,7 +47,7 @@ const allTransactions = [
     category: "Entertainment",
     amount: -15.99,
     description: "Monthly subscription",
-    account: "Chase Checking",
+    account: "American Express",
   },
   {
     id: 5,
@@ -55,7 +56,7 @@ const allTransactions = [
     category: "Food",
     amount: -156.78,
     description: "Weekly groceries",
-    account: "Chase Checking",
+    account: "American Express",
   },
   {
     id: 6,
@@ -64,7 +65,7 @@ const allTransactions = [
     category: "Transportation",
     amount: -45.2,
     description: "Fuel",
-    account: "Chase Checking",
+    account: "American Express",
   },
   {
     id: 7,
@@ -73,7 +74,7 @@ const allTransactions = [
     category: "Food",
     amount: -78.5,
     description: "Dinner with friends",
-    account: "Chase Checking",
+    account: "American Express",
   },
   {
     id: 8,
@@ -82,7 +83,7 @@ const allTransactions = [
     category: "Shopping",
     amount: -234.99,
     description: "Clothing purchase",
-    account: "Chase Checking",
+    account: "American Express",
   },
   {
     id: 9,
@@ -91,7 +92,7 @@ const allTransactions = [
     category: "Other",
     amount: -49.99,
     description: "Monthly gym fee",
-    account: "Chase Checking",
+    account: "American Express",
   },
   {
     id: 10,
@@ -100,7 +101,7 @@ const allTransactions = [
     category: "Utilities",
     amount: -125.3,
     description: "Monthly electric bill",
-    account: "Chase Checking",
+    account: "American Express",
   },
   {
     id: 11,
@@ -109,7 +110,7 @@ const allTransactions = [
     category: "Entertainment",
     amount: -32.5,
     description: "Movie tickets",
-    account: "Chase Checking",
+    account: "American Express",
   },
   {
     id: 12,
@@ -118,7 +119,7 @@ const allTransactions = [
     category: "Food",
     amount: -8.75,
     description: "Morning coffee",
-    account: "Chase Checking",
+    account: "American Express",
   },
   {
     id: 13,
@@ -127,7 +128,7 @@ const allTransactions = [
     category: "Other",
     amount: -23.45,
     description: "Prescription medication",
-    account: "Chase Checking",
+    account: "American Express",
   },
   {
     id: 14,
@@ -136,7 +137,7 @@ const allTransactions = [
     category: "Shopping",
     amount: -45.6,
     description: "Books and magazines",
-    account: "Chase Checking",
+    account: "American Express",
   },
   {
     id: 15,
@@ -145,7 +146,7 @@ const allTransactions = [
     category: "Utilities",
     amount: -79.99,
     description: "Monthly internet bill",
-    account: "Chase Checking",
+    account: "American Express",
   },
 ]
 
@@ -235,31 +236,43 @@ export default function TransactionsPage() {
         <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 pt-24">
           <div className="space-y-8">
             {/* Page Header */}
-            <div className="text-center space-y-4">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            {/* <div className="text-center space-y-4">
+              <h1 className="text-xl font-semibold text-gray-800 mb-6">
                 All Transactions
               </h1>
               <p className="text-gray-600 text-lg">
                 View and manage all your transactions. Click on any category to change it.
               </p>
-            </div>
+            </div> */}
 
             {/* Filters and Search */}
+            {/* Still needs a fix */}
             <GlassCard className="p-6">
               <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
                 <div className="flex flex-col sm:flex-row gap-4 flex-1">
                   {/* Search */}
-                  <div className="relative flex-1 max-w-md">
-                    <Input
-                      placeholder="Search transactions..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 bg-white/50 border-white/60 focus:bg-white/70 transition-all"
-                    />
+                  <div className="flex-1 max-w-md">
+                    {/* Scoped relative wrapper */}
+                    <div className="relative w-full">
+                      {/* Icon */}
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                        <Search className="h-4 w-4" />
+                      </span>
+
+                      {/* Input */}
+                      <Input
+                        placeholder="Search transactions..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pl-10 pr-4 py-2 text-sm bg-white/50 border-white/60 focus:bg-white/70 transition-all"
+                      />
+                    </div>
                   </div>
 
+
+
                   {/* Category Filter */}
-                  <DropdownMenu disableScrollLock>
+                  <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button
                         variant="outline"
@@ -312,7 +325,6 @@ export default function TransactionsPage() {
                               <div className="flex items-center justify-between">
                                 <div>
                                   <p className="font-semibold text-gray-800">{transaction.merchant}</p>
-                                  <p className="text-sm text-gray-500">{transaction.description}</p>
                                 </div>
                                 <div className="text-right">
                                   <p className="font-bold text-gray-800 text-lg">
@@ -322,7 +334,15 @@ export default function TransactionsPage() {
                                 </div>
                               </div>
                               <div className="flex items-center justify-between mt-2">
-                                <p className="text-sm text-gray-500">{transaction.account}</p>
+                                <div className="text-sm text-gray-500">
+                                  {transaction.account}
+                                  <Badge variant="outline" className="bg-white/50 border-white/60 text-gray-700 text-xs ">
+                                      {/* {transaction.accountType} */}
+                                      Checking
+                                  </Badge>
+                                  {/* <span>••••{transaction.lastFour}</span> */}
+                                  <span>••••1234</span>
+                                </div>
 
                                 {/* Editable Category */}
                                 <DropdownMenu>

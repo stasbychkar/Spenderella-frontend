@@ -7,10 +7,10 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { SpendingChart } from "@/components/spending-chart"
 import { GlassCard } from "@/components/glass-card"
 import Image from "next/image"
+import Link from 'next/link'
 import { useEffect, useState } from "react"
-import { createLinkToken, exchangePublicToken } from '@/lib/api/plaid';
+import { createLinkToken, exchangePublicToken } from "@/lib/api/plaid"
 import { fetchDashboard, DashboardData } from "@/lib/api/database"
-import Link from 'next/link';
 
 // Sample data
 
@@ -106,37 +106,32 @@ export default function Dashboard() {
   useEffect(() => {
     async function initPlaid() {
       try {
-        const { link_token } = await createLinkToken();
-
+        const { link_token } = await createLinkToken()
+  
         const handler = (window as any).Plaid.create({
           token: link_token,
           onSuccess: async (public_token: string, metadata: any) => {
-            console.log("Public token received:", public_token);
-
+            console.log("Public token received:", public_token)
+  
             try {
-              const result = await exchangePublicToken(
-                public_token,
-                metadata.institution?.name
-              );
-              console.log("Exchange token result:", result);
-              window.location.reload();
+              await exchangePublicToken(public_token, metadata.institution?.name)
+              window.location.reload()
             } catch (err) {
-              console.error("Error exchanging token:", err);
+              console.error("Error exchanging token:", err)
             }
           },
-        });
-
-        const btn = document.getElementById("link-button");
-        if (btn) {
-          btn.onclick = () => handler.open();
-        }
+        })
+  
+        // Attach Plaid handler to button click
+        const btn = document.getElementById("link-button")
+        if (btn) btn.onclick = () => handler.open()
       } catch (err) {
-        console.error("Error creating Plaid link token:", err);
+        console.error("Error creating Plaid link token:", err)
       }
     }
-
-    initPlaid();
-  }, []);
+  
+    initPlaid()
+  }, [])
 
   // Get dashboard data
   const [dashboardData, setDashboardData] = useState<DashboardData>({
@@ -151,18 +146,21 @@ export default function Dashboard() {
   useEffect(() => {
     async function loadDashboard() {
       try {
-        setLoading(true);
-        const data = await fetchDashboard();
-        setDashboardData(data);
+        setLoading(true)
+  
+        // Fetch dashboard data (accounts, transactions, categories, etc.)
+        const data = await fetchDashboard()
+        setDashboardData(data)
       } catch (err) {
-        setError((err as Error).message);
+        setError((err as Error).message)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     }
-
-    loadDashboard();
-  }, []);
+  
+    loadDashboard()
+  }, [])
+  
 
   console.log("Dashboard data fetched: ", dashboardData);
 
@@ -215,6 +213,7 @@ export default function Dashboard() {
     </div>
   )
 
+  // Handling errors
   if (error) return <div>Error loading dashboard: {error}</div>;
   if (!dashboardData) return <div>No dashboard data available.</div>;
 
@@ -224,7 +223,6 @@ export default function Dashboard() {
   const spendingData = dashboardData.spending_by_category;
   const recentTransactions = dashboardData.transactions;
 
-  
   // Show no accounts page if no banks are linked
   if (linkedBanks.length == 0) {
     return (

@@ -29,7 +29,7 @@ export interface CategorySpend {
 }
 
 export async function fetchDashboard(): Promise<DashboardData> {
-    const res = await fetch(`${BASE_URL}/db-get-dashboard-data`, {
+    const res = await fetch(`${BASE_URL}/db-get-dashboard-page-data`, {
         credentials: "include",
     });
 

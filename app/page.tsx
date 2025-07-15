@@ -10,6 +10,7 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import { createLinkToken, exchangePublicToken } from '@/lib/api/plaid';
 import { fetchDashboard, DashboardData } from "@/lib/api/database"
+import Link from 'next/link';
 
 // Sample data
 
@@ -369,7 +370,7 @@ export default function Dashboard() {
                           <div className="h-3 w-3 rounded-full" style={{ backgroundColor: category.color }} />
                           <span className="text-sm font-medium text-gray-700">{category.name}</span>
                         </div>
-                        <span className="text-sm font-semibold text-gray-800">${category.value}</span>
+                        <span className="text-sm font-semibold text-gray-800">${category.value.toFixed(2)}</span>
                       </div>
                     ))}
                   </div>
@@ -428,15 +429,17 @@ export default function Dashboard() {
                 <GlassCard className="p-6 bg-white/30 h-[500px] flex flex-col">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-xl font-semibold text-gray-800">Recent Transactions</h3>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="bg-white/40 border-white/50 hover:bg-white/60 text-gray-700 transition-all"
-                    >
-                      <Eye className="mr-2 h-4 w-4" />
-                      View All
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                      <Link href="/transactions">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="bg-white/40 border-white/50 hover:bg-white/60 text-gray-700 transition-all"
+                          >
+                          <Eye className="mr-2 h-4 w-4" />
+                          View All
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </Link>
                   </div>
 
                   <ScrollArea className="flex-1">
@@ -454,7 +457,7 @@ export default function Dashboard() {
                                 <Wallet className="h-5 w-5 text-gray-600" />
                               </div>
                               <div>
-                                <p className="font-medium text-gray-800">{transaction.merchant}</p>
+                                <p className="font-medium text-gray-800">{transaction.merchant || transaction.original_name }</p>
                                 <p className="text-sm text-gray-500">{transaction.date}</p>
                               </div>
                             </div>

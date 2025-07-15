@@ -246,31 +246,18 @@ export default function TransactionsPage() {
             </div> */}
 
             {/* Filters and Search */}
-            {/* Still needs a fix */}
             <GlassCard className="p-6">
               <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
                 <div className="flex flex-col sm:flex-row gap-4 flex-1">
                   {/* Search */}
                   <div className="flex-1 max-w-md">
-                    {/* Scoped relative wrapper */}
-                    <div className="relative w-full">
-                      {/* Icon */}
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                        <Search className="h-4 w-4" />
-                      </span>
-
-                      {/* Input */}
                       <Input
                         placeholder="Search transactions..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="pl-10 pr-4 py-2 text-sm bg-white/50 border-white/60 focus:bg-white/70 transition-all"
                       />
-                    </div>
                   </div>
-
-
-
                   {/* Category Filter */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -335,13 +322,13 @@ export default function TransactionsPage() {
                               </div>
                               <div className="flex items-center justify-between mt-2">
                                 <div className="text-sm text-gray-500">
-                                  {transaction.account}
+                                  <span>{transaction.account} </span>
                                   <Badge variant="outline" className="bg-white/50 border-white/60 text-gray-700 text-xs ">
                                       {/* {transaction.accountType} */}
                                       Checking
                                   </Badge>
                                   {/* <span>••••{transaction.lastFour}</span> */}
-                                  <span>••••1234</span>
+                                  <span> ••••1234</span>
                                 </div>
 
                                 {/* Editable Category */}

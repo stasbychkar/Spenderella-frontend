@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_MY_API_BASE_URL;
+export const BASE_URL = process.env.NEXT_PUBLIC_MY_API_BASE_URL;
 
 // Dashboard page
 export interface DashboardData {
@@ -64,6 +64,7 @@ export interface Transaction {
     mask: string;
 }
 
+// Function not used yet
 export async function fetchTransactions(): Promise<TransactionsData> {
     const res = await fetch(`${BASE_URL}/db-get-transactions-page-data`, {
         credentials: "include",

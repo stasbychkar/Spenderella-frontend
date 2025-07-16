@@ -160,10 +160,9 @@ export default function Dashboard() {
     loadDashboard()
   }, [])
   
-
   console.log("Dashboard data fetched: ", dashboardData);
 
-  // To do ...
+  // Loading page
   if (loading) return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Modern Background Pattern */}
@@ -204,7 +203,7 @@ export default function Dashboard() {
             <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center text-center">
                 <div className="space-y-6">
                   <div className="space-y-3 pb-4  ">
-                    <h2 className="text-2xl font-semibold text-gray-800">Loading...</h2>
+                    <h2 className="text-xl font-semibold text-gray-800">Loading...</h2>
                   </div>
                 </div>
             </div>

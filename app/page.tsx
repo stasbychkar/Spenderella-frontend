@@ -13,7 +13,6 @@ import { createLinkToken, exchangePublicToken } from "@/lib/api/plaid"
 import { fetchDashboard, DashboardData } from "@/lib/api/database"
 
 // Sample data
-
 // const linkedBanks = [
 //   {
 //     id: 1,

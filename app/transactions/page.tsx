@@ -10,186 +10,221 @@ import { GlassCard } from "@/components/glass-card"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import Image from "next/image"
 import Link from "next/link"
+import { fetchTransactions, TransactionsData } from "@/lib/api/database"
+import toTitleCaseFromSnakeCase from "@/lib/str_utils" // didn't finish here
 
-// Extended transaction data
-const allTransactions = [
-  {
-    id: 1,
-    date: "Dec 15, 2023",
-    merchant: "Starbucks Coffee",
-    category: "Food",
-    amount: -12.45,
-    description: "Coffee and pastry",
-    account: "American Express",
-  },
-  {
-    id: 2,
-    date: "Dec 14, 2023",
-    merchant: "Amazon Purchase",
-    category: "Shopping",
-    amount: -89.99,
-    description: "Electronics accessories",
-    account: "American Express",
-  },
-  {
-    id: 3,
-    date: "Dec 14, 2023",
-    merchant: "Uber Ride",
-    category: "Transportation",
-    amount: -24.5,
-    description: "Ride to downtown",
-    account: "American Express",
-  },
-  {
-    id: 4,
-    date: "Dec 13, 2023",
-    merchant: "Netflix Subscription",
-    category: "Entertainment",
-    amount: -15.99,
-    description: "Monthly subscription",
-    account: "American Express",
-  },
-  {
-    id: 5,
-    date: "Dec 12, 2023",
-    merchant: "Grocery Store",
-    category: "Food",
-    amount: -156.78,
-    description: "Weekly groceries",
-    account: "American Express",
-  },
-  {
-    id: 6,
-    date: "Dec 11, 2023",
-    merchant: "Gas Station",
-    category: "Transportation",
-    amount: -45.2,
-    description: "Fuel",
-    account: "American Express",
-  },
-  {
-    id: 7,
-    date: "Dec 10, 2023",
-    merchant: "Restaurant Dinner",
-    category: "Food",
-    amount: -78.5,
-    description: "Dinner with friends",
-    account: "American Express",
-  },
-  {
-    id: 8,
-    date: "Dec 9, 2023",
-    merchant: "Online Shopping",
-    category: "Shopping",
-    amount: -234.99,
-    description: "Clothing purchase",
-    account: "American Express",
-  },
-  {
-    id: 9,
-    date: "Dec 8, 2023",
-    merchant: "Gym Membership",
-    category: "Other",
-    amount: -49.99,
-    description: "Monthly gym fee",
-    account: "American Express",
-  },
-  {
-    id: 10,
-    date: "Dec 7, 2023",
-    merchant: "Electric Company",
-    category: "Utilities",
-    amount: -125.3,
-    description: "Monthly electric bill",
-    account: "American Express",
-  },
-  {
-    id: 11,
-    date: "Dec 6, 2023",
-    merchant: "Movie Theater",
-    category: "Entertainment",
-    amount: -32.5,
-    description: "Movie tickets",
-    account: "American Express",
-  },
-  {
-    id: 12,
-    date: "Dec 5, 2023",
-    merchant: "Coffee Shop",
-    category: "Food",
-    amount: -8.75,
-    description: "Morning coffee",
-    account: "American Express",
-  },
-  {
-    id: 13,
-    date: "Dec 4, 2023",
-    merchant: "Pharmacy",
-    category: "Other",
-    amount: -23.45,
-    description: "Prescription medication",
-    account: "American Express",
-  },
-  {
-    id: 14,
-    date: "Dec 3, 2023",
-    merchant: "Bookstore",
-    category: "Shopping",
-    amount: -45.6,
-    description: "Books and magazines",
-    account: "American Express",
-  },
-  {
-    id: 15,
-    date: "Dec 2, 2023",
-    merchant: "Internet Provider",
-    category: "Utilities",
-    amount: -79.99,
-    description: "Monthly internet bill",
-    account: "American Express",
-  },
-]
+// // Sample transaction data
+// const allTransactions = [
+//   {
+//     id: 1,
+//     date: "Dec 15, 2023",
+//     merchant: "Starbucks Coffee",
+//     category: "Food",
+//     amount: -12.45,
+//     description: "Coffee and pastry",
+//     account: "American Express",
+//   },
+//   {
+//     id: 2,
+//     date: "Dec 14, 2023",
+//     merchant: "Amazon Purchase",
+//     category: "Shopping",
+//     amount: -89.99,
+//     description: "Electronics accessories",
+//     account: "American Express",
+//   },
+//   {
+//     id: 3,
+//     date: "Dec 14, 2023",
+//     merchant: "Uber Ride",
+//     category: "Transportation",
+//     amount: -24.5,
+//     description: "Ride to downtown",
+//     account: "American Express",
+//   },
+//   {
+//     id: 4,
+//     date: "Dec 13, 2023",
+//     merchant: "Netflix Subscription",
+//     category: "Entertainment",
+//     amount: -15.99,
+//     description: "Monthly subscription",
+//     account: "American Express",
+//   },
+//   {
+//     id: 5,
+//     date: "Dec 12, 2023",
+//     merchant: "Grocery Store",
+//     category: "Food",
+//     amount: -156.78,
+//     description: "Weekly groceries",
+//     account: "American Express",
+//   },
+//   {
+//     id: 6,
+//     date: "Dec 11, 2023",
+//     merchant: "Gas Station",
+//     category: "Transportation",
+//     amount: -45.2,
+//     description: "Fuel",
+//     account: "American Express",
+//   },
+//   {
+//     id: 7,
+//     date: "Dec 10, 2023",
+//     merchant: "Restaurant Dinner",
+//     category: "Food",
+//     amount: -78.5,
+//     description: "Dinner with friends",
+//     account: "American Express",
+//   },
+//   {
+//     id: 8,
+//     date: "Dec 9, 2023",
+//     merchant: "Online Shopping",
+//     category: "Shopping",
+//     amount: -234.99,
+//     description: "Clothing purchase",
+//     account: "American Express",
+//   },
+//   {
+//     id: 9,
+//     date: "Dec 8, 2023",
+//     merchant: "Gym Membership",
+//     category: "Other",
+//     amount: -49.99,
+//     description: "Monthly gym fee",
+//     account: "American Express",
+//   },
+//   {
+//     id: 10,
+//     date: "Dec 7, 2023",
+//     merchant: "Electric Company",
+//     category: "Utilities",
+//     amount: -125.3,
+//     description: "Monthly electric bill",
+//     account: "American Express",
+//   },
+//   {
+//     id: 11,
+//     date: "Dec 6, 2023",
+//     merchant: "Movie Theater",
+//     category: "Entertainment",
+//     amount: -32.5,
+//     description: "Movie tickets",
+//     account: "American Express",
+//   },
+//   {
+//     id: 12,
+//     date: "Dec 5, 2023",
+//     merchant: "Coffee Shop",
+//     category: "Food",
+//     amount: -8.75,
+//     description: "Morning coffee",
+//     account: "American Express",
+//   },
+//   {
+//     id: 13,
+//     date: "Dec 4, 2023",
+//     merchant: "Pharmacy",
+//     category: "Other",
+//     amount: -23.45,
+//     description: "Prescription medication",
+//     account: "American Express",
+//   },
+//   {
+//     id: 14,
+//     date: "Dec 3, 2023",
+//     merchant: "Bookstore",
+//     category: "Shopping",
+//     amount: -45.6,
+//     description: "Books and magazines",
+//     account: "American Express",
+//   },
+//   {
+//     id: 15,
+//     date: "Dec 2, 2023",
+//     merchant: "Internet Provider",
+//     category: "Utilities",
+//     amount: -79.99,
+//     description: "Monthly internet bill",
+//     account: "American Express",
+//   },
+// ]
 
-const categories = [
-  { name: "Food", color: "#3b82f6" },
-  { name: "Shopping", color: "#8b5cf6" },
-  { name: "Transportation", color: "#06b6d4" },
-  { name: "Entertainment", color: "#f59e0b" },
-  { name: "Utilities", color: "#10b981" },
-  { name: "Other", color: "#ef4444" },
-]
+// const categories = [
+//   { name: "Food", color: "#3b82f6" },
+//   { name: "Shopping", color: "#8b5cf6" },
+//   { name: "Transportation", color: "#06b6d4" },
+//   { name: "Entertainment", color: "#f59e0b" },
+//   { name: "Utilities", color: "#10b981" },
+//   { name: "Other", color: "#ef4444" },
+// ]
 
 export default function TransactionsPage() {
-  const [transactions, setTransactions] = useState(allTransactions)
+  const [transactions, setTransactions] = useState<TransactionsData>({
+    categories: [],
+    transactions: [],
+  });
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [isLoaded, setIsLoaded] = useState(false)
+  // analogy to the dashboard page
+  const [error, setError ] = useState<string | null>(null);
+  const [loading, setLoading ] = useState<boolean>(true);
 
   // Animation effect when page loads
   useEffect(() => {
     setIsLoaded(true)
   }, [])
 
+  // Fetch transactions data
+  useEffect(() => {
+    async function loadTransactions() {
+      try {
+        setLoading(true)
+
+        const data = await fetchTransactions()
+        setTransactions(data)
+      } catch (err) {
+        setError((err as Error).message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadTransactions()
+  }, [])
+
+  console.log("Dashboard data fetched: ", transactions);
+
   // Filter transactions based on search and category
-  const filteredTransactions = transactions.filter((transaction) => {
+  const filteredTransactions = transactions.transactions.filter((transaction) => {
+    const merchant = transaction.merchant || ""
+    const originalName = transaction.original_name || ""
+    const search = searchTerm.toLowerCase()
+
     const matchesSearch =
-      transaction.merchant.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      transaction.description.toLowerCase().includes(searchTerm.toLowerCase())
+      merchant.toLowerCase().includes(search) ||
+      originalName.toLowerCase().includes(search)
+
     const matchesCategory = selectedCategory === "All" || transaction.category === selectedCategory
     return matchesSearch && matchesCategory
   })
 
   // Update transaction category
   const updateTransactionCategory = (transactionId: number, newCategory: string) => {
-    setTransactions((prev) =>
-      prev.map((transaction) =>
+    setTransactions((prev) => ({
+      ...prev,
+      transactions: prev.transactions.map((transaction) =>
         transaction.id === transactionId ? { ...transaction, category: newCategory } : transaction,
       ),
-    )
+    }))
   }
+  
 
   const getCategoryColor = (categoryName: string) => {
-    return categories.find((cat) => cat.name === categoryName)?.color || "#6b7280"
+    return transactions.categories.find((cat) => cat.name === categoryName)?.color || "#6b7280"
   }
 
   return (
@@ -272,7 +307,7 @@ export default function TransactionsPage() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="bg-white/95 backdrop-blur-sm border-white/60">
                       <DropdownMenuItem onClick={() => setSelectedCategory("All")}>All Categories</DropdownMenuItem>
-                      {categories.map((category) => (
+                      {transactions.categories.map((category) => (
                         <DropdownMenuItem key={category.name} onClick={() => setSelectedCategory(category.name)}>
                           <div className="flex items-center gap-2">
                             <div className="h-3 w-3 rounded-full" style={{ backgroundColor: category.color }} />
@@ -311,7 +346,7 @@ export default function TransactionsPage() {
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
                                 <div>
-                                  <p className="font-semibold text-gray-800">{transaction.merchant}</p>
+                                  <p className="font-semibold text-gray-800">{transaction.merchant || transaction.original_name}</p>
                                 </div>
                                 <div className="text-right">
                                   <p className="font-bold text-gray-800 text-lg">
@@ -322,13 +357,11 @@ export default function TransactionsPage() {
                               </div>
                               <div className="flex items-center justify-between mt-2">
                                 <div className="text-sm text-gray-500">
-                                  <span>{transaction.account} </span>
+                                  <span>{transaction.bank_name} </span>
                                   <Badge variant="outline" className="bg-white/50 border-white/60 text-gray-700 text-xs ">
-                                      {/* {transaction.accountType} */}
-                                      Checking
+                                      {transaction.account_type}
                                   </Badge>
-                                  {/* <span>••••{transaction.lastFour}</span> */}
-                                  <span> ••••1234</span>
+                                  <span>••••{transaction.mask}</span>
                                 </div>
 
                                 {/* Editable Category */}
@@ -349,7 +382,7 @@ export default function TransactionsPage() {
                                     </Button>
                                   </DropdownMenuTrigger>
                                   <DropdownMenuContent className="bg-white/95 backdrop-blur-sm border-white/60">
-                                    {categories.map((category) => (
+                                    {transactions.categories.map((category) => (
                                       <DropdownMenuItem
                                         key={category.name}
                                         onClick={() => updateTransactionCategory(transaction.id, category.name)}

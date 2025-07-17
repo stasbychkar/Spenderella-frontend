@@ -1,6 +1,6 @@
 "use client"
 
-import { CreditCard, Eye, ArrowRight, Building2, Wallet, Plus, User } from "lucide-react"
+import { CreditCard, Eye, ArrowRight, Building2, Wallet, Plus, User, LayoutPanelLeft, HandCoins } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -355,7 +355,20 @@ export default function Dashboard() {
               {/* Spending by Category */}
               <div className="lg:col-span-2">
                 <GlassCard className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-6">Spending by Category</h3>
+                  <div className="flex justify-between">
+                    <h3 className="text-xl font-semibold text-gray-800 mb-6">Spending by Category</h3>
+                    <Link href="/categories">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="bg-white/40 border-white/50 hover:bg-white/60 text-gray-700 transition-all"
+                            >
+                            <LayoutPanelLeft className="mr-2 h-4 w-4" />
+                            Manage
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                          </Button>
+                    </Link>  
+                  </div>
                   <div className="flex items-center justify-center">
                     <SpendingChart data={spendingData} />
                   </div>
@@ -425,17 +438,17 @@ export default function Dashboard() {
                 <GlassCard className="p-6 bg-white/30 h-[500px] flex flex-col">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-xl font-semibold text-gray-800">Recent Transactions</h3>
-                      <Link href="/transactions">
+                    <Link href="/transactions">
                         <Button
                           variant="outline"
                           size="sm"
                           className="bg-white/40 border-white/50 hover:bg-white/60 text-gray-700 transition-all"
                           >
-                          <Eye className="mr-2 h-4 w-4" />
+                          <HandCoins className="mr-2 h-4 w-4" />
                           View All
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
-                      </Link>
+                    </Link>
                   </div>
 
                   <ScrollArea className="flex-1">

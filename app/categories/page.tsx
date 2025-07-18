@@ -1,6 +1,6 @@
 "use client"
 
-import { Plus, Edit2, Palette, Save, ArrowLeft } from "lucide-react"
+import { Plus, Edit2, Palette, Save, ArrowLeft, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from 'next/link'
@@ -8,114 +8,165 @@ import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { fetchCategories, BASE_URL } from "@/lib/api/database"
 
 interface Category {
-  id: string
+  id: number
   name: string
   color: string
 }
 
-const initialCategories: Category[] = [
-  { id: "1", name: "Travel", color: "#10B981" },
-  { id: "2", name: "Home Improvement", color: "#8B5CF6" },
-  { id: "3", name: "Transportation", color: "#3B82F6" },
-  { id: "4", name: "General Merchandise", color: "#A855F7" },
-  { id: "5", name: "Food And Drink", color: "#06B6D4" },
-  { id: "6", name: "Entertainment", color: "#F59E0B" },
-  { id: "7", name: "Healthcare", color: "#EF4444" },
-  { id: "8", name: "Utilities", color: "#84CC16" },
-]
+// Sample data
+// const initialCategories: Category[] = [
+//   { id: 1, name: "Travel", color: "#10B981" },
+//   { id: 2, name: "Home Improvement", color: "#8B5CF6" },
+//   { id: 3, name: "Transportation", color: "#3B82F6" },
+//   { id: 4, name: "General Merchandise", color: "#A855F7" },
+//   { id: 5, name: "Food And Drink", color: "#06B6D4" },
+//   { id: 6, name: "Entertainment", color: "#F59E0B" },
+//   { id: 7, name: "Healthcare", color: "#EF4444" },
+//   { id: 8, name: "Utilities", color: "#84CC16" },
+// ]
 
 const colorOptions = [
-  "#10B981",
-  "#8B5CF6",
-  "#3B82F6",
-  "#A855F7",
-  "#06B6D4",
-  "#F59E0B",
-  "#EF4444",
-  "#84CC16",
-  "#EC4899",
-  "#6366F1",
+  "#eab308",
+  "#4ade80",
+  "#a3e635",
+  "#06b6d4",
+  "#38bdf8",
+  "#f43f5e",
+  "#ec4899",
+  "#fcd34d",
+  "#fb923c",
+  "#2dd4bf",
+  "#818cf8",
+  "#facc15",
+  "#60a5fa",
+  "#be185d",
+  "#4c1d95" 
 ]
-
 
 export default function Categories() {
 
-    const [categories, setCategories] = useState<Category[]>(initialCategories)
+    const [categories, setCategories] = useState<Category[]>()
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
     const [editingCategory, setEditingCategory] = useState<Category | null>(null)
     const [newCategoryName, setNewCategoryName] = useState("")
     const [newCategoryColor, setNewCategoryColor] = useState(colorOptions[0])
-    // const [loading, setLoading ] = useState<boolean>(true);
+    const [loading, setLoading ] = useState<boolean>(true);
     const [error, setError ] = useState<string | null>(null);
 
-//   // Loading page
-//   if (loading) return (
-//     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-//       {/* Modern Background Pattern */}
-//       <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-indigo-500/5" />
-//       <div
-//         className="fixed inset-0 opacity-30"
-//         style={{
-//           backgroundImage: `radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%), 
-//                            radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%)`,
-//         }}
-//       />
+    // Fetch categories data
+    useEffect(() => {
+        async function loadCategories() {
+          try {
+            setLoading(true)
+    
+            const data = await fetchCategories()
+            setCategories(data)
+          } catch (err) {
+            setError((err as Error).message)
+          } finally {
+            setLoading(false)
+          }
+        }
+    
+        loadCategories()
+      }, [])
 
-//       <div className="relative z-10">
-//         {/* Top Navigation */}
-//         <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/20 bg-white/10 backdrop-blur-xl">
-//           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-//             <div className="flex h-16 items-center justify-between">
-//               <div className="flex items-center gap-3">
-//                 <Image src="/logo.png" alt="Spenderella Logo" width={48} height={48} className="object-contain" />
-//                 <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-//                   Spenderella
-//                 </h1>
-//               </div>
+      console.log("Categories data fetched: ", categories);
 
-//               <div className="flex items-center gap-4">
-//                 <Button
-//                   variant="ghost"
-//                   size="icon"
-//                   className="h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all">
-//                   <User className="h-5 w-5 text-gray-700" />
-//                 </Button>
-//               </div>
-//             </div>
-//           </div>
-//         </nav>      
-//       </div>
-//       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8 pt-24">
-//             <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center text-center">
-//                 <div className="space-y-6">
-//                   <div className="space-y-3 pb-4  ">
-//                     <h2 className="text-xl font-semibold text-gray-800">Loading...</h2>
-//                   </div>
-//                 </div>
-//             </div>
-//       </main>
-//     </div>
-//   )
+  // Loading page
+  if (loading) return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      {/* Modern Background Pattern */}
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-indigo-500/5" />
+      <div
+        className="fixed inset-0 opacity-30"
+        style={{
+          backgroundImage: `radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%), 
+                           radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%)`,
+        }}
+      />
+
+      <div className="relative z-10">
+        {/* Top Navigation */}
+        <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/20 bg-white/10 backdrop-blur-xl">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex h-16 items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Image src="/logo.png" alt="Spenderella Logo" width={48} height={48} className="object-contain" />
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Spenderella
+                </h1>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all">
+                  <User className="h-5 w-5 text-gray-700" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </nav>      
+      </div>
+      <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8 pt-24">
+            <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center text-center">
+                <div className="space-y-6">
+                  <div className="space-y-3 pb-4  ">
+                    <h2 className="text-xl font-semibold text-gray-800">Loading...</h2>
+                  </div>
+                </div>
+            </div>
+      </main>
+    </div>
+  )
 
   // Handling errors
-  if (error) return <div>Error loading dashboard: {error}</div>;
-//   if (!dashboardData) return <div>No dashboard data available.</div>;
+  if (error) return <div>Error loading transactions: {error}</div>;
+  if (!categories) return <div>No categories data available.</div>;
 
-const handleAddCategory = () => {
+const handleAddCategory = async () => {
     if (newCategoryName.trim()) {
       const newCategory: Category = {
-        id: Date.now().toString(),
+        id: Date.now(),
         name: newCategoryName.trim(),
         color: newCategoryColor,
       }
+      // UI   
       setCategories([...categories, newCategory])
       setNewCategoryName("")
       setNewCategoryColor(colorOptions[0])
       setIsAddDialogOpen(false)
+      // Updating database
       // TODO: Call API to add category
+      try {
+        const res = await fetch(`${BASE_URL}/db-add-custom-category`, {
+            method: "PUT",
+            headers: {
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: 1, // hardcoded for now
+                name: newCategoryName.trim(),
+                color: newCategoryColor,
+            })
+        })
+        
+        if (!res.ok) {
+            throw new Error("Transaction category backend update failed")
+        }
+
+        const data = await res.json();
+        console.log("Successfully added:", data);
+      } catch (err) {
+        console.log("Adding custom category failed: ", err)
+      }
+
       console.log("Adding category:", newCategory)
     }
   }
@@ -223,7 +274,7 @@ const handleAddCategory = () => {
                   </div>
                   <div>
                     <Label className="text-gray-700">Choose Color</Label>
-                    <div className="flex gap-2 mt-2">
+                    <div className="flex gap-2 mt-2 flex-wrap">
                       {colorOptions.map((color) => (
                         <button
                           key={color}

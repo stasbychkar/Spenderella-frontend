@@ -64,7 +64,6 @@ export interface Transaction {
     mask: string;
 }
 
-// Function not used yet
 export async function fetchTransactions(): Promise<TransactionsData> {
     const res = await fetch(`${BASE_URL}/db-get-transactions-page-data`, {
         credentials: "include",
@@ -74,3 +73,14 @@ export async function fetchTransactions(): Promise<TransactionsData> {
 
     return res.json();
 }
+
+// Categories page
+export async function fetchCategories(): Promise<Category[]> {
+    const res = await fetch(`${BASE_URL}/db-get-categories-page-data`, {
+        credentials: "include",
+    });
+
+    if (!res.ok) throw new Error("Failed to fetch categories page data");
+
+    return res.json();
+} 

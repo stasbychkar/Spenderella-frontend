@@ -1,6 +1,6 @@
 "use client"
 
-import { Plus, Edit2, Palette, Save, ArrowLeft, User, Trash2 } from "lucide-react"
+import { Plus, Edit2, Save, ArrowLeft, User, Trash2, ArrowRight, SearchX } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from 'next/link'
@@ -228,12 +228,40 @@ const handleAddCategory = async () => {
     setIsDeleteDialogOpen(true)
   }
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async() => {
     if (deletingCategory) {
+      // UI
       const updatedCategories = customCategories.filter((cat) => cat.id !== deletingCategory.id)
       setCustomCategories(updatedCategories)
       setIsDeleteDialogOpen(false)
       setDeletingCategory(null)
+
+      // Database
+      try {
+        const res = await fetch(`${BASE_URL}/db-delete-custom-category`, {
+            method: "PUT",
+            headers: {
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                id: deletingCategory.id,
+                user_id: 1, // hardcoded for now
+                name: newCategoryName.trim(),
+                color: newCategoryColor,
+            })
+        })
+        
+        if (!res.ok) {
+            throw new Error("Category backend delete failed")
+        }
+
+        const data = await res.json();
+        console.log("Successfully deleted:", data);
+
+      } catch (err) {
+        console.log("Deleting custom category failed: ", err)
+      }
+
       console.log("Deleting custom category:", deletingCategory.id)
     }
   }
@@ -467,14 +495,14 @@ const handleAddCategory = async () => {
 
                 {customCategories.length === 0 && (
                   <div className="text-center py-12">
-                    <Palette className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-600 mb-2">No custom categories yet</h3>
-                    <p className="text-gray-500 mb-4">Create your first custom spending category to get started</p>
+                    <h3 className="text-lg font-medium text-gray-600 mb-1">No custom categories yet</h3>
                     <Button
                       onClick={() => setIsAddDialogOpen(true)}
-                      className="bg-blue-500 hover:bg-blue-600 text-white rounded-xl"
+                      size="lg"
+                      className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-0 shadow-xl hover:shadow-2xl transition-all duration-300 text-lg px-8 py-6 mt-2"
+                      id="link-button"
                     >
-                      <Plus className="w-4 h-4 mr-2" />
+                      <Plus className="mr-3 h-6 w-6" />
                       Add Your First Category
                     </Button>
                   </div>

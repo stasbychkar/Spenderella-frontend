@@ -11,7 +11,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import Image from "next/image"
 import Link from "next/link"
 import { fetchTransactions, TransactionsData, BASE_URL } from "@/lib/api/database"
-import toTitleCaseFromSnakeCase from "@/lib/str_utils" // didn't finish here
 
 // // Sample transaction data
 // const allTransactions = [
@@ -168,9 +167,8 @@ export default function TransactionsPage() {
   });
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
-  // analogy to the dashboard page
-  const [error, setError ] = useState<string | null>(null);
-  const [loading, setLoading ] = useState<boolean>(true);
+  const [error, setError ] = useState<string | null>(null)
+  const [loading, setLoading ] = useState<boolean>(true)
 
   // Fetch transactions data
   useEffect(() => {
@@ -305,7 +303,7 @@ export default function TransactionsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Modern Background Pattern */}
+      {/* Background Pattern */}
       <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-indigo-500/5" />
       <div
         className="fixed inset-0 opacity-30"
@@ -346,16 +344,6 @@ export default function TransactionsPage() {
         {/* Main Content */}
         <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 pt-24">
           <div className="space-y-8">
-            {/* Page Header */}
-            {/* <div className="text-center space-y-4">
-              <h1 className="text-xl font-semibold text-gray-800 mb-6">
-                All Transactions
-              </h1>
-              <p className="text-gray-600 text-lg">
-                View and manage all your transactions. Click on any category to change it.
-              </p>
-            </div> */}
-
             {/* Filters and Search */}
             <GlassCard className="p-6">
               <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">

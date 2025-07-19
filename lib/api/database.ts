@@ -75,7 +75,12 @@ export async function fetchTransactions(): Promise<TransactionsData> {
 }
 
 // Categories page
-export async function fetchCategories(): Promise<Category[]> {
+export interface CategoriesData {
+    gen_catogories: Category[];
+    cus_catogories: Category[];
+}
+
+export async function fetchCategories(): Promise<CategoriesData> {
     const res = await fetch(`${BASE_URL}/db-get-categories-page-data`, {
         credentials: "include",
     });

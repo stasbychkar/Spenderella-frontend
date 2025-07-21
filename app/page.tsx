@@ -180,13 +180,14 @@ export default function Dashboard() {
         <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/20 bg-white/10 backdrop-blur-xl">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Image src="/logo.png" alt="Spenderella Logo" width={48} height={48} className="object-contain" />
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Spenderella
-                </h1>
-              </div>
-
+              <Link href="/">
+                <div className="flex items-center gap-3">
+                  <Image src="/logo.png" alt="Spenderella Logo" width={48} height={48} className="object-contain" />
+                  <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    Spenderella
+                  </h1>
+                </div>
+              </Link>
               <div className="flex items-center gap-4">
                 <Button
                   variant="ghost"
@@ -395,15 +396,17 @@ export default function Dashboard() {
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-xl font-semibold text-gray-800">Linked Accounts</h3>
                     {linkedBanks.length > 0 && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="bg-white/40 border-white/50 hover:bg-white/60 text-gray-700 transition-all"
-                      >
-                        <CreditCard className="mr-2 h-4 w-4" />
-                        Manage
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
+                      <Link href="/accounts">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="bg-white/40 border-white/50 hover:bg-white/60 text-gray-700 transition-all"
+                        >
+                          <CreditCard className="mr-2 h-4 w-4" />
+                          Manage
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </Link>
                     )}
                   </div>
 

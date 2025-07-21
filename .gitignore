@@ -37,3 +37,5 @@ yarn-error.log*
 # Optional: lock files for other package managers you aren't using
 package-lock.json
 yarn.lock
+
+venv

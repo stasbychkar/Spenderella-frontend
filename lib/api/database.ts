@@ -89,3 +89,25 @@ export async function fetchCategories(): Promise<CategoriesData> {
 
     return res.json();
 } 
+
+// Accounts page
+export interface Account {
+    id: number;
+    bankName: string;
+    lastFourDigits: string;
+    accountType: string;
+}
+
+export interface AccountsData {
+    linked_accounts: Account[]
+}
+
+export async function fetchAccounts(): Promise<AccountsData> {
+    const res = await fetch(`${BASE_URL}/db-get-accounts-page`, {
+        credentials: "include",
+    });
+
+    if (!res.ok) throw new Error("Failed to fetch accounts page data");
+
+    return res.json();
+} 

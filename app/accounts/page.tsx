@@ -7,6 +7,7 @@ import Image from "next/image"
 import Link from 'next/link'
 import { useEffect, useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { createLinkToken, exchangePublicToken } from "@/lib/api/plaid"
 import { fetchAccounts, BASE_URL } from "@/lib/api/database"
 
 interface BankAccount {
@@ -71,6 +72,37 @@ export default function ManageAccounts() {
   }, [])
 
   console.log("Accounts data fetched: ", accounts)
+
+      // Connect new bank item
+      useEffect(() => {
+        async function initPlaid() {
+          try {
+            const { link_token } = await createLinkToken()
+      
+            const handler = (window as any).Plaid.create({
+              token: link_token,
+              onSuccess: async (public_token: string, metadata: any) => {
+                console.log("Public token received:", public_token)
+      
+                try {
+                  await exchangePublicToken(public_token, metadata.institution?.name)
+                  window.location.reload()
+                } catch (err) {
+                  console.error("Error exchanging token:", err)
+                }
+              },
+            })
+      
+            // Attach Plaid handler to button click
+            const btn = document.getElementById("link-button")
+            if (btn) btn.onclick = () => handler.open()
+          } catch (err) {
+            console.error("Error creating Plaid link token:", err)
+          }
+        }
+      
+        initPlaid()
+      }, [])
 
 // Loading page
 if (loading) return (
@@ -162,10 +194,6 @@ if (loading) return (
   }
 
   // Handle connecting new account
-  const handleConnectAccount = () => {
-    // TODO: Integrate with bank connection service (Plaid, Yodlee, etc.)
-    console.log("Initiating bank connection flow")
-  }
 
   // Get account icon - same for all accounts
   const getAccountIcon = () => {
@@ -229,8 +257,8 @@ if (loading) return (
                     <h2 className="text-xl font-semibold text-slate-800">Linked Accounts</h2>
                   </div>
                   <Button
-                    onClick={handleConnectAccount}
                     className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-0 shadow-xl hover:shadow-2xl transition-all duration-300 text-lg px-4 py-2 h-auto"
+                    id="link-button"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Connect Account

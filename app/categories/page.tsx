@@ -316,7 +316,6 @@ const handleAddCategory = async () => {
         <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 pt-24">
           <div className="space-y-8">
             <div className="items-center justify-between mb-6 flex-wrap">
-              {/* Trying adding stuff */}
 
               {/* Custom Categories */}
               <div className="bg-white/20 backdrop-blur-xl rounded-2xl shadow-xl p-8 mb-6">
@@ -345,6 +344,7 @@ const handleAddCategory = async () => {
                             value={newCategoryName}
                             onChange={(e) => setNewCategoryName(e.target.value)}
                             placeholder="Enter category name"
+                            autoComplete="off"
                             className="bg-white/50 border-white/30 rounded-l mt-1"
                           />
                         </div>
@@ -436,6 +436,7 @@ const handleAddCategory = async () => {
                                     value={newCategoryName}
                                     onChange={(e) => setNewCategoryName(e.target.value)}
                                     placeholder="Enter category name"
+                                    autoComplete="off"
                                     className="bg-white/50 border-white/30 rounded-xl mt-1"
                                   />
                                 </div>

@@ -318,7 +318,7 @@ export default function TransactionsPage() {
         <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/20 bg-white/10 backdrop-blur-xl">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between">
-              <Link href="/" className="flex items-center gap-3">
+              <Link href="/demo/dashboard" className="flex items-center gap-3">
                 <Image src="/logo.png" alt="Spenderella Logo" width={48} height={48} className="object-contain" />
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   Spenderella 
@@ -326,7 +326,7 @@ export default function TransactionsPage() {
               </Link>
 
               <div className="flex items-center gap-4">
-                <Link href="/">
+                <Link href="/demo/dashboard">
                   <Button
                     variant="ghost"
                     size="sm"

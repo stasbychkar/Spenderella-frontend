@@ -1,0 +1,359 @@
+/* Converted tailwind css styles */
+
+.heroGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+@media (min-width: 1024px) {
+    .heroGrid {
+        grid-template-columns: 1fr 1.5fr;
+    }
+}
+
+.h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+@media (min-width: 640px) {
+    .h1 {
+        font-size: 3.75rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .h1 {
+        font-size: 4.5rem;
+    }
+}
+
+.gradientText {
+    background: linear-gradient(to right, #111827, #1e40af, #6b21a8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.spaceY8 > * + * {
+    margin-top: 2rem;
+}
+
+.spaceY6 > * + * {
+    margin-top: 1.5rem;
+}
+
+.arrowIcon {
+    margin-left: 0.75rem;
+    height: 1.25rem;
+    width: 1.25rem;
+    transition: transform 0.2s ease-in-out;
+}
+
+.group:hover .arrowIcon {
+    transform: translateX(0.25rem);
+}
+
+.iconSmallGreen {
+    height: 1rem;
+    width: 1rem;
+    color: #22c55e;
+}
+
+.flexRow {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-top: 1rem;
+}
+
+.sectionPadding {
+    padding: 5rem 1rem;
+}
+
+@media (min-width: 640px) {
+    .sectionPadding {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .sectionPadding {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+.sectionLargePadding {
+    padding: 7rem 1rem 5rem;
+}
+
+@media (min-width: 640px) {
+    .sectionLargePadding {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .sectionLargePadding {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+.trafficLight {
+    height: 0.75rem;
+    width: 0.75rem;
+    border-radius: 9999px;
+}
+
+.redLight {
+    background-color: rgba(248, 113, 113, 0.6);
+}
+
+.yellowLight {
+    background-color: rgba(250, 204, 21, 0.6);
+}
+
+.greenLight {
+    background-color: rgba(74, 222, 128, 0.6);
+}
+
+.floatingCircle {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(25px);
+    animation: pulse 3s infinite;
+}
+
+.topRightCircle {
+    top: -1rem;
+    right: -1rem;
+    height: 5rem;
+    width: 5rem;
+    background-image: linear-gradient(to bottom right, rgba(96, 165, 250, 0.3), rgba(192, 132, 252, 0.3));
+}
+
+.bottomLeftCircle {
+    bottom: -2rem;
+    left: -2rem;
+    height: 4rem;
+    width: 4rem;
+    background-image: linear-gradient(to bottom right, rgba(192, 132, 252, 0.3), rgba(129, 140, 248, 0.3));
+    animation-delay: 1s;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.heading {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .heading {
+        font-size: 3rem;
+    }
+}
+
+.gradientH2 {
+    background-image: linear-gradient(to right, #2563eb, #9333ea);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.featuresContainer {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 72rem;
+}
+
+@media (min-width: 768px) {
+    .featuresContainer {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.featureCard {
+    padding: 2rem;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    transition: all 0.2s ease-in-out;
+}
+
+.featureCard:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.iconWrapper1,
+.iconWrapper2,
+.iconWrapper3 {
+    display: flex;
+    height: 4rem;
+    width: 4rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    margin: 0 auto 1.5rem;
+    transition: transform 0.2s ease-in-out;
+}
+
+.iconWrapper1 {
+    background-image: linear-gradient(to bottom right, #3b82f6, #2563eb);
+}
+
+.iconWrapper2 {
+    background-image: linear-gradient(to bottom right, #a855f7, #9333ea);
+}
+
+.iconWrapper3 {
+    background-image: linear-gradient(to bottom right, #6366f1, #4f46e5);
+}
+
+.group:hover .iconWrapper {
+    transform: scale(1.1);
+}
+
+.icon1 {
+    height: 2rem;
+    width: 2rem;
+    color: white;
+}
+
+.featureTitle {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
+
+.featureSectionPadding {
+    padding: 3rem 1rem 5rem;
+}
+
+@media (min-width: 640px) {
+    .featureSectionPadding {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .featureSectionPadding {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+.textCenterSpacing {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.demoButton {
+    width: 100%;
+}
+
+.footer {
+    padding: 2rem 1rem 3rem;
+    border-top: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+@media (min-width: 640px) {
+    .footer {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .footer {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80rem;
+}
+
+.flexColMdRow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .flexColMdRow {
+        flex-direction: row;
+    }
+}
+
+.flexRowItemsCenterGap3 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.mt8Pt8BorderTopTextCenter {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 3px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+.dialogContent {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(1rem);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    max-width: 42rem;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.alertBox {
+    display: flex;
+    align-items: center;
+    column-gap: 0.75rem;
+    padding: 1rem;
+    background-color: rgba(239, 246, 255, 0.5);
+    border-radius: 0.75rem;
+    border: 1px solid rgba(191, 219, 254, 0.5);
+}
+
+.label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1f2937;
+    cursor: pointer;
+    display: flex;
+    align-items: center; 
+    gap: 1rem;
+}
+  

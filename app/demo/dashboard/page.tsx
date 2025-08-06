@@ -134,6 +134,7 @@ export default function Dashboard() {
 
   // Get dashboard data
   const [dashboardData, setDashboardData] = useState<DashboardData>({
+    username: "",
     total_spent: 0,
     linked_banks: [],
     transactions: [],
@@ -217,6 +218,7 @@ export default function Dashboard() {
   if (!dashboardData) return <div>No dashboard data available.</div>;
 
   // Adjust data for frontend use
+  const username = dashboardData.username;
   const linkedBanks = dashboardData.linked_banks;
   const totalSpent = dashboardData.total_spent;
   const spendingData = dashboardData.spending_by_category;
@@ -325,6 +327,7 @@ export default function Dashboard() {
               </div>
 
               <div className="flex items-center gap-4">
+                <p className="text-sm text-gray-500">{username}</p>
                 <Button
                   variant="ghost"
                   size="icon"

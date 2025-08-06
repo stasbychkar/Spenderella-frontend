@@ -2,6 +2,7 @@ export const BASE_URL = process.env.NEXT_PUBLIC_MY_API_BASE_URL;
 
 // Dashboard page
 export interface DashboardData {
+    username: string;
     total_spent: number;
     linked_banks: Bank[];
     transactions: Transaction[];

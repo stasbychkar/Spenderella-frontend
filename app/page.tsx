@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { GlassCard } from "@/components/glass-card"
 import Image from "next/image"
 import Link from "next/link"
+import { BASE_URL } from "@/lib/api/database"
 
 export default function Landing() {
   const [isAccessModalOpen, setIsAccessModalOpen] = useState(false)
@@ -30,7 +31,7 @@ export default function Landing() {
     e.preventDefault()
     if (accessFormData.name && accessFormData.email && accessFormData.problem) {
       setIsAccessFormSubmitted(true)
-      // TODO: y send the form data to your backend
+      // TODO: y send the form data to backend
       setTimeout(() => {
         setAccessFormData({
           name: "",
@@ -51,6 +52,26 @@ export default function Landing() {
       [field]: value,
     }))
   }
+
+  const handleTryDemo = async () => {
+    const res = await fetch(`${BASE_URL}/db-create-demo-user`, {
+      method: "POST"
+    });
+  
+    if (!res.ok) {
+      console.error("Failed to create demo user");
+      return;
+    }
+  
+    const data = await res.json();
+    const demoId = data.user_id;
+  
+    // Store ID for future requests
+    localStorage.setItem("demo_user_id", demoId);
+  
+    // Redirect to dashboard
+    window.location.href = "/demo/dashboard";
+  };  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -96,6 +117,7 @@ export default function Landing() {
                       variant="outline"
                       size="lg"
                       className={`bg-white/40 backdrop-blur-sm border-white/30 hover:bg-white/60 text-gray-800 transition-all duration-300 text-lg px-8 py-6 h-auto group ${styles.demoButton}`}
+                      onClick={handleTryDemo}
                     >
                       <Play className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
                       Try Demo

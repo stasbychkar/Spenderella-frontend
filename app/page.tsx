@@ -22,23 +22,45 @@
     const [accessFormData, setAccessFormData] = useState({
       name: "",
       email: "",
-      hearAbout: "",
       problem: "",
       openToCall: false,
     })
     const [isAccessFormSubmitted, setIsAccessFormSubmitted] = useState(false)
     const [showDemoLoading, setShowDemoLoading] = useState(false)
 
-    const handleAccessFormSubmit = (e: React.FormEvent) => {
+    const handleAccessFormSubmit = async (e: React.FormEvent) => {
       e.preventDefault()
       if (accessFormData.name && accessFormData.email && accessFormData.problem) {
         setIsAccessFormSubmitted(true)
+
         // TODO: y send the form data to backend
+        try {
+          const res = await fetch(`${BASE_URL}/db-save-form`, {
+              method: "POST",
+              headers: {
+                  "Content-type": "application/json",
+              },
+              body: JSON.stringify({
+                  name: accessFormData.name,
+                  email: accessFormData.email,
+                  problem: accessFormData.problem,
+                  openToCall: accessFormData.openToCall,
+              })
+          })
+          
+          if (!res.ok) {
+              throw new Error("Saving of a form failed")
+          }
+  
+          const data = await res.json();
+        } catch (err) {
+          console.log("Saving submitted form failed: ", err)
+        }
+        
         setTimeout(() => {
           setAccessFormData({
             name: "",
             email: "",
-            hearAbout: "",
             problem: "",
             openToCall: false,
           })

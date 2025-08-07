@@ -31,8 +31,14 @@ export interface CategorySpend {
 }
 
 export async function fetchDashboard(): Promise<DashboardData> {
+    const demoUserId = localStorage.getItem("demo_user_id");
+
     const res = await fetch(`${BASE_URL}/db-get-dashboard-page-data`, {
         credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            "x-demo-user-id": demoUserId || "",
+        },
     });
 
     if (!res.ok) throw new Error("Failed to fetch dashboard page data");
@@ -66,8 +72,14 @@ export interface Transaction {
 }
 
 export async function fetchTransactions(): Promise<TransactionsData> {
+    const demoUserId = localStorage.getItem("demo_user_id");
+    
     const res = await fetch(`${BASE_URL}/db-get-transactions-page-data`, {
         credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            "x-demo-user-id": demoUserId || "",
+        },
     });
 
     if (!res.ok) throw new Error("Failed to fetch transactions page data");
@@ -82,8 +94,14 @@ export interface CategoriesData {
 }
 
 export async function fetchCategories(): Promise<CategoriesData> {
+    const demoUserId = localStorage.getItem("demo_user_id");
+
     const res = await fetch(`${BASE_URL}/db-get-categories-page-data`, {
         credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            "x-demo-user-id": demoUserId || "",
+        },
     });
 
     if (!res.ok) throw new Error("Failed to fetch categories page data");
@@ -104,8 +122,14 @@ export interface AccountsData {
 }
 
 export async function fetchAccounts(): Promise<AccountsData> {
+    const demoUserId = localStorage.getItem("demo_user_id");
+    
     const res = await fetch(`${BASE_URL}/db-get-accounts-page`, {
         credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            "x-demo-user-id": demoUserId || "",
+        },
     });
 
     if (!res.ok) throw new Error("Failed to fetch accounts page data");

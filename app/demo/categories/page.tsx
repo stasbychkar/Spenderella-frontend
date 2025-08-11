@@ -62,6 +62,7 @@ export default function Categories() {
     const [error, setError ] = useState<string | null>(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
     const [deletingCategory, setDeletingCategory] = useState<Category | null>(null)
+    const demoUserId = localStorage.getItem("demo_user_id");
 
     // Fetch categories data
     useEffect(() => {
@@ -156,9 +157,10 @@ const handleAddCategory = async () => {
             method: "PUT",
             headers: {
                 "Content-type": "application/json",
+                "x-demo-user-id": demoUserId || "",
             },
             body: JSON.stringify({
-                user_id: 1, // hardcoded for now
+                user_id: demoUserId,
                 name: newCategoryName.trim(),
                 color: newCategoryColor,
             })
@@ -189,16 +191,18 @@ const handleAddCategory = async () => {
       setEditingCategory(null)
       setNewCategoryName("")
       setNewCategoryColor(colorOptions[0])
+      
       // Updaing database
       try {
         const res = await fetch(`${BASE_URL}/db-edit-custom-category`, {
             method: "PUT",
             headers: {
                 "Content-type": "application/json",
+                "x-demo-user-id": demoUserId || "",
             },
             body: JSON.stringify({
                 id: editingCategory.id,
-                user_id: 1, // hardcoded for now
+                user_id: demoUserId,
                 name: newCategoryName.trim(),
                 color: newCategoryColor,
             })
@@ -242,10 +246,11 @@ const handleAddCategory = async () => {
             method: "PUT",
             headers: {
                 "Content-type": "application/json",
+                "x-demo-user-id": demoUserId || "",
             },
             body: JSON.stringify({
                 id: deletingCategory.id,
-                user_id: 1, // hardcoded for now
+                user_id: demoUserId,
                 name: newCategoryName.trim(),
                 color: newCategoryColor,
             })

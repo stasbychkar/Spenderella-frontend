@@ -11,10 +11,13 @@
         publicToken: string,
         institutionName: string
     ): Promise<any> {
+        const demoUserId = localStorage.getItem("demo_user_id");
+
         const res = await fetch(`${BASE_URL}/exchange-token`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "x-demo-user-id": demoUserId || "",
             },
             body: JSON.stringify({
                 public_token: publicToken,

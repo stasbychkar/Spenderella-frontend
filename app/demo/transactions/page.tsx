@@ -169,6 +169,7 @@ export default function TransactionsPage() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [error, setError ] = useState<string | null>(null)
   const [loading, setLoading ] = useState<boolean>(true)
+  const [demoUserId, setDemoUserId] = useState<string | null>(null);
 
   // Fetch transactions data
   useEffect(() => {
@@ -189,6 +190,11 @@ export default function TransactionsPage() {
   }, [])
 
   console.log("Dashboard data fetched: ", transactions);
+
+  useEffect(() => {
+    const id = localStorage.getItem("demo_user_id");
+    setDemoUserId(id);
+  }, []);  
 
   // Filter transactions based on search and category
   const filteredTransactions = transactions.transactions.filter((transaction) => {
@@ -222,6 +228,7 @@ export default function TransactionsPage() {
         method: "PUT",
         headers: {
           "Content-type": "application/json",
+          "x-demo-user-id": demoUserId || "",
         },
         body: JSON.stringify({
           transaction_id: transactionId,

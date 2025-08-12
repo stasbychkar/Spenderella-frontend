@@ -194,7 +194,7 @@
                             </div>
                             <div className="flex-1 text-center">
                               <div className="inline-block px-4 py-1 bg-white/40 rounded-full text-xs text-gray-600">
-                                spenderella.com
+                                spenderella.xyz
                               </div>
                             </div>
                           </div>

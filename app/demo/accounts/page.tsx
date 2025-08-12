@@ -51,6 +51,7 @@ export default function ManageAccounts() {
   const [deletingAccount, setDeletingAccount] = useState<BankAccount | null>(null)
   const [loading, setLoading ] = useState<boolean>(true);
   const [error, setError ] = useState<string | null>(null);
+  const [demoUserId, setDemoUserId] = useState<string | null>(null);
 
   // Fetch accounts data
   useEffect(() => {
@@ -72,6 +73,11 @@ export default function ManageAccounts() {
   }, [])
 
   console.log("Accounts data fetched: ", accounts)
+
+  useEffect(() => {
+    const id = localStorage.getItem("demo_user_id");
+    setDemoUserId(id);
+  }, []); 
 
       // Connect new bank item
       useEffect(() => {
@@ -173,6 +179,7 @@ if (loading) return (
             method: "PUT",
             headers: {
                 "Content-type": "application/json",
+                "x-demo-user-id": demoUserId || "",
             },
             body: JSON.stringify({
                 id: deletingAccount.id,

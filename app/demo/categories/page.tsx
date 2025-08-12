@@ -62,7 +62,7 @@ export default function Categories() {
     const [error, setError ] = useState<string | null>(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
     const [deletingCategory, setDeletingCategory] = useState<Category | null>(null)
-    const demoUserId = localStorage.getItem("demo_user_id");
+    const [demoUserId, setDemoUserId] = useState<string | null>(null);
 
     // Fetch categories data
     useEffect(() => {
@@ -85,6 +85,11 @@ export default function Categories() {
       }, [])
 
       console.log("Categories data fetched: ", categories);
+
+      useEffect(() => {
+        const id = localStorage.getItem("demo_user_id");
+        setDemoUserId(id);
+      }, []);   
 
   // Loading page
   if (loading) return (

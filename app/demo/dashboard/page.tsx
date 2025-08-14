@@ -110,7 +110,7 @@ export default function Dashboard() {
         const handler = (window as any).Plaid.create({
           token: link_token,
           onSuccess: async (public_token: string, metadata: any) => {
-            console.log("Public token received:", public_token)
+            // console.log("Public token received:", public_token)
   
             try {
               await exchangePublicToken(public_token, metadata.institution?.name)
@@ -161,7 +161,7 @@ export default function Dashboard() {
     loadDashboard()
   }, [])
   
-  console.log("Dashboard data fetched: ", dashboardData);
+  // console.log("Dashboard data fetched: ", dashboardData);
 
   // Loading page
   if (loading) return (

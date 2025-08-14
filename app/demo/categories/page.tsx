@@ -84,7 +84,7 @@ export default function Categories() {
         loadCategories()
       }, [])
 
-      console.log("Categories data fetched: ", categories);
+      // console.log("Categories data fetched: ", categories);
 
       useEffect(() => {
         const id = localStorage.getItem("demo_user_id");
@@ -176,12 +176,12 @@ const handleAddCategory = async () => {
         }
 
         const data = await res.json();
-        console.log("Successfully added:", data);
+        // console.log("Successfully added:", data);
       } catch (err) {
-        console.log("Adding custom category failed: ", err)
+        // console.log("Adding custom category failed: ", err)
       }
 
-      console.log("Adding category:", newCategory)
+      // console.log("Adding category:", newCategory)
     }
   }
 
@@ -218,11 +218,11 @@ const handleAddCategory = async () => {
         }
 
         const data = await res.json();
-        console.log("Successfully added:", data);
+        // console.log("Successfully added:", data);
       } catch (err) {
-        console.log("Editing custom category failed: ", err)
+        // console.log("Editing custom category failed: ", err)
       }
-      console.log("Updating category:", { id: editingCategory.id, name: newCategoryName, color: newCategoryColor })
+      // console.log("Updating category:", { id: editingCategory.id, name: newCategoryName, color: newCategoryColor })
     }
   }
 
@@ -266,13 +266,13 @@ const handleAddCategory = async () => {
         }
 
         const data = await res.json();
-        console.log("Successfully deleted:", data);
+        // console.log("Successfully deleted:", data);
 
       } catch (err) {
-        console.log("Deleting custom category failed: ", err)
+        // console.log("Deleting custom category failed: ", err)
       }
 
-      console.log("Deleting custom category:", deletingCategory.id)
+      // console.log("Deleting custom category:", deletingCategory.id)
     }
   }
 

@@ -54,7 +54,7 @@
   
           const data = await res.json();
         } catch (err) {
-          console.log("Saving submitted form failed: ", err)
+          // console.log("Saving submitted form failed: ", err)
         }
         
         setTimeout(() => {

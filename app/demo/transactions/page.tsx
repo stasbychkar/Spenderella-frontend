@@ -189,7 +189,7 @@ export default function TransactionsPage() {
     loadTransactions()
   }, [])
 
-  console.log("Dashboard data fetched: ", transactions);
+  // console.log("Dashboard data fetched: ", transactions);
 
   useEffect(() => {
     const id = localStorage.getItem("demo_user_id");
@@ -241,9 +241,9 @@ export default function TransactionsPage() {
       }
 
       const data = await res.json();
-      console.log("Successfully updated:", data);
+      // console.log("Successfully updated:", data);
     } catch (err) {
-      console.log("Transaction category backend update failed: ", err)
+      // console.log("Transaction category backend update failed: ", err)
 
       setTransactions((prev) => ({
         ...prev,
@@ -356,7 +356,7 @@ export default function TransactionsPage() {
               <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
                 <div className="flex flex-col sm:flex-row gap-4 flex-1">
                   {/* Search */}
-                  <div className="flex-1 max-w-md">
+                  <div className="flex-1">
                       <Input
                         placeholder="Search transactions..."
                         value={searchTerm}

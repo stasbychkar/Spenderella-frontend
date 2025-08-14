@@ -72,7 +72,7 @@ export default function ManageAccounts() {
     loadAccounts()
   }, [])
 
-  console.log("Accounts data fetched: ", accounts)
+  // console.log("Accounts data fetched: ", accounts)
 
   useEffect(() => {
     const id = localStorage.getItem("demo_user_id");
@@ -88,7 +88,7 @@ export default function ManageAccounts() {
             const handler = (window as any).Plaid.create({
               token: link_token,
               onSuccess: async (public_token: string, metadata: any) => {
-                console.log("Public token received:", public_token)
+                // console.log("Public token received:", public_token)
       
                 try {
                   await exchangePublicToken(public_token, metadata.institution?.name)
@@ -191,12 +191,12 @@ if (loading) return (
         }
 
         const data = await res.json();
-        console.log("Successfully deleted:", data);
+        // console.log("Successfully deleted:", data);
 
       } catch (err) {
-        console.log("Deleting custom category failed: ", err)
+        // console.log("Deleting custom category failed: ", err)
       }
-      console.log("Deleting account:", deletingAccount.id)
+      // console.log("Deleting account:", deletingAccount.id)
     }
   }
 

@@ -8,7 +8,7 @@ import { SpendingChart } from "@/components/spending-chart"
 import { GlassCard } from "@/components/glass-card"
 import Image from "next/image"
 import Link from 'next/link'
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { createLinkToken, exchangePublicToken } from "@/lib/api/plaid"
 import { fetchDashboard, DashboardData } from "@/lib/api/database"
 
@@ -121,9 +121,6 @@ export default function Dashboard() {
           },
         })
   
-        // Attach Plaid handler to button click
-        const btn = document.getElementById("link-button")
-        if (btn) btn.onclick = () => handler.open()
       } catch (err) {
         console.error("Error creating Plaid link token:", err)
       }
@@ -142,6 +139,7 @@ export default function Dashboard() {
   });  
   const [error, setError ] = useState<string | null>(null);
   const [loading, setLoading ] = useState<boolean>(true);
+  const plaidHandler = useRef<any>(null);
 
   useEffect(() => {
     async function loadDashboard() {
@@ -285,6 +283,7 @@ export default function Dashboard() {
                     <Button
                       size="lg"
                       className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-0 shadow-xl hover:shadow-2xl transition-all duration-300 text-lg px-8 py-6 h-auto"
+                      onClick={() => plaidHandler.current?.open()}
                       id="link-button"
                     >
                       <Plus className="mr-3 h-6 w-6" />

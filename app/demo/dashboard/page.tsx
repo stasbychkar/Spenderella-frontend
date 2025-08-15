@@ -107,7 +107,7 @@ export default function Dashboard() {
       try {
         const { link_token } = await createLinkToken()
   
-        const handler = (window as any).Plaid.create({
+        plaidHandler.current = (window as any).Plaid.create({
           token: link_token,
           onSuccess: async (public_token: string, metadata: any) => {
             // console.log("Public token received:", public_token)
